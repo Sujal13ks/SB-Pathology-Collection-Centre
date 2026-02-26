@@ -76,19 +76,19 @@ export default function Homepage() {
                         </button>
                     </Link>
 
-                    <Link href="/#">
+                    <Link href="/about">
                         <button className="bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl shadow-md transition duration-300 w-full">
                             About
                         </button>
                     </Link>
 
-                    <Link href="/#">
+                    <Link href="/doctors_cuts">
                         <button className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl shadow-md transition duration-300 w-full">
                             Doctors cut
                         </button>
                     </Link>
 
-                    <Link href="/#">
+                    <Link href="/lab_info">
                         <button className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl shadow-md transition duration-300 w-full">
                             Lab info.
                         </button>
