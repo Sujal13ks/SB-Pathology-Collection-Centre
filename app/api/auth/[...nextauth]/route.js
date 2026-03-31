@@ -8,7 +8,7 @@ export const { handlers, auth } = NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      checks: ["none"], // 🔥 ADD THIS LINE
+      checks: ["none"],
     }),
   ],
 
@@ -17,37 +17,51 @@ export const { handlers, auth } = NextAuth({
 
   callbacks: {
     async signIn({ user, account }) {
-      if (account.provider === "github") {
-        await connectDB();
+      try {
+        if (account.provider === "github") {
+          await connectDB();
 
-        let currentUser = await User.findOne({
-          email: user.email,
-        });
+          // ✅ FIX: handle null email
+          const email = user.email || `${user.name}@github.com`;
 
-        if (!currentUser) {
-          currentUser = await User.create({
-            email: user.email,
-            username: user.email.split("@")[0],
+          let currentUser = await User.findOne({
+            email: email,
           });
+
+          if (!currentUser) {
+            await User.create({
+              email: email,
+              username: email.split("@")[0],
+            });
+          }
+
+          return true;
         }
 
-        return true;
+        return true; // ✅ DON'T BLOCK
+      } catch (error) {
+        console.log("SignIn Error:", error);
+        return false;
       }
-      return false;
     },
 
     async session({ session }) {
-      await connectDB();
+      try {
+        await connectDB();
 
-      const dbUser = await User.findOne({
-        email: session.user.email,
-      });
+        const dbUser = await User.findOne({
+          email: session.user.email,
+        });
 
-      if (dbUser) {
-        session.user.name = dbUser.username;
+        if (dbUser) {
+          session.user.name = dbUser.username;
+        }
+
+        return session;
+      } catch (error) {
+        console.log("Session Error:", error);
+        return session;
       }
-
-      return session;
     },
   },
 });
