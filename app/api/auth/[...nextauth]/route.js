@@ -8,11 +8,12 @@ export const { handlers, auth } = NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+      checks: ["none"], // 🔥 ADD THIS LINE
     }),
   ],
 
-  secret: process.env.NEXTAUTH_SECRET, // ✅ ADD THIS
-  trustHost: true, // ✅ ADD THIS (important for Vercel)
+  secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true,
 
   callbacks: {
     async signIn({ user, account }) {
@@ -52,7 +53,6 @@ export const { handlers, auth } = NextAuth({
 });
 
 export const { GET, POST } = handlers;
-
 
 // import connectDB from "@/db/connectdb";
 // import User from "@/models/User";
