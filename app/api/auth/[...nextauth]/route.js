@@ -8,7 +8,12 @@ export const { handlers, auth } = NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      checks: ["none"],
+      checks: ["none"], // fix PKCE issue
+      authorization: {
+        params: {
+          prompt: "login", // always ask GitHub account
+        },
+      },
     }),
   ],
 
@@ -17,11 +22,11 @@ export const { handlers, auth } = NextAuth({
 
   callbacks: {
     async signIn({ user, account }) {
-      try {
-        if (account.provider === "github") {
+      if (account.provider === "github") {
+        try {
           await connectDB();
 
-          // ✅ ALWAYS UNIQUE EMAIL
+          // ✅ handle missing email + make unique
           const email =
             user.email ||
             `${user.name}_${account.providerAccountId}@github.com`;
@@ -31,18 +36,20 @@ export const { handlers, auth } = NextAuth({
           if (!currentUser) {
             await User.create({
               email,
-              username: user.name || email.split("@")[0],
+              username: user.name || "user",
             });
           }
 
           return true;
-        }
+        } catch (error) {
+          console.log("DB Error:", error);
 
-        return true;
-      } catch (error) {
-        console.log("SignIn Error:", error);
-        return false;
+          // ✅ IMPORTANT: still allow login even if DB fails
+          return true;
+        }
       }
+
+      return true;
     },
 
     async session({ session }) {
