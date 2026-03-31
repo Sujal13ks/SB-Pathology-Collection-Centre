@@ -1,17 +1,32 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-  try {
-    if (mongoose.connection.readyState >= 1) return;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-    await mongoose.connect(process.env.MONGODB_URI);
+if (!MONGODB_URI) {
+  throw new Error("Please define MONGODB_URI in env");
+}
 
-    console.log("MongoDB Connected ✅");
-  } catch (error) {
-    console.log("DB Error:", error);
-    throw error;
+// global cache (for Next.js)
+let cached = global.mongoose || { conn: null, promise: null };
+
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn; // ✅ reuse connection
   }
-};
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      bufferCommands: false,
+    });
+  }
+
+  cached.conn = await cached.promise;
+  global.mongoose = cached;
+
+  console.log("MongoDB Connected ✅");
+
+  return cached.conn;
+}
 
 export default connectDB;
 
