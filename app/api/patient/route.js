@@ -8,34 +8,20 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    // ✅ validation
     if (!body.name || !body.age || !body.gender || !body.doctorName) {
       return NextResponse.json(
-        { message: "All required fields missing" },
+        { message: "All fields required" },
         { status: 400 }
       );
     }
 
-    // ✅ clean data
-    const patientData = {
+    const patient = await Patient.create({
       name: body.name.trim(),
       age: Number(body.age),
       gender: body.gender,
       doctorName: body.doctorName.trim(),
-      address: body.address?.trim() || "",
-    };
-
-    // ✅ check age
-    if (isNaN(patientData.age)) {
-      return NextResponse.json(
-        { message: "Age must be number" },
-        { status: 400 }
-      );
-    }
-
-    console.log("Patient Data:", patientData);
-
-    const patient = await Patient.create(patientData);
+      address: body.address || "",
+    });
 
     return NextResponse.json(
       { success: true, patient },

@@ -1,5 +1,6 @@
 import connectDB from "@/db/connectdb";
 import Bill from "@/models/Bill";
+import Patient from "@/models/Patient"; // 🔥 VERY IMPORTANT
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -22,6 +23,15 @@ export async function POST(req) {
       );
     }
 
+    // ✅ check patient exists (🔥 EXTRA FIX)
+    const patientExists = await Patient.findById(body.patientId);
+    if (!patientExists) {
+      return NextResponse.json(
+        { message: "Patient not found" },
+        { status: 404 }
+      );
+    }
+
     // ✅ validate tests
     if (!Array.isArray(body.tests) || body.tests.length === 0) {
       return NextResponse.json(
@@ -30,12 +40,13 @@ export async function POST(req) {
       );
     }
 
-    // ✅ clean tests + ensure number
+    // ✅ clean tests
     const cleanTests = body.tests.map((t) => ({
       name: t.name,
       price: Number(t.price),
     }));
 
+    // ✅ calculate total
     const total = cleanTests.reduce(
       (sum, t) => sum + t.price,
       0
@@ -66,7 +77,7 @@ export async function GET() {
     await connectDB();
 
     const bills = await Bill.find()
-      .populate("patientId")
+      .populate("patientId", "name age gender doctorName") // 🔥 FIXED
       .sort({ createdAt: -1 });
 
     return NextResponse.json({
