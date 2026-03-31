@@ -113,7 +113,7 @@ export default function RevenuePage() {
         </div>
 
         {/* Filters */}
-        {/* <div className="flex gap-3 mb-6">
+        <div className="flex gap-3 mb-6">
           {["today", "week", "month"].map((f) => (
             <button
               key={f}
@@ -127,7 +127,7 @@ export default function RevenuePage() {
               {f}
             </button>
           ))}
-        </div> */}
+        </div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
