@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import {
-    FileText,
-    IndianRupee,
-    Info,
-    Stethoscope,
-    UserPlus,
+  FileText,
+  IndianRupee,
+  Info,
+  Stethoscope,
+  UserPlus,
 } from "lucide-react";
 
 export default function Homepage() {
@@ -38,7 +38,7 @@ export default function Homepage() {
 
       <div className="flex flex-1">
 
-        {/* Sidebar */}
+        
         <aside className="w-64 bg-white/70 backdrop-blur-lg shadow-lg hidden md:flex flex-col p-5">
           <h2 className="text-xl font-bold text-blue-600 mb-8">
             Lab System
@@ -63,10 +63,10 @@ export default function Homepage() {
           </nav>
         </aside>
 
-        {/* Right Side */}
+        
         <div className="flex-1 flex flex-col">
 
-          {/* Navbar */}
+          
           <div className="bg-white/80 backdrop-blur shadow-sm px-6 py-4 flex justify-between items-center">
             <h1 className="text-lg font-semibold text-gray-800">
               Dashboard
@@ -76,10 +76,10 @@ export default function Homepage() {
             </p>
           </div>
 
-          {/* Content */}
+          
           <div className="flex-1 flex flex-col p-6 gap-6">
 
-            {/* 🔥 Banner */}
+            
             <div
               className="relative rounded-2xl overflow-hidden shadow-xl flex items-center"
               style={{
@@ -101,10 +101,10 @@ export default function Homepage() {
               </div>
             </div>
 
-            {/* 🔥 Action Cards */}
+            
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-              {/* Add Patient */}
+              
               <div
                 onClick={() => router.push("/patient")}
                 className="group relative bg-white/80 backdrop-blur p-6 rounded-xl shadow hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex items-center gap-4"
@@ -115,7 +115,7 @@ export default function Homepage() {
                 </h3>
               </div>
 
-              {/* Records */}
+              
               <div
                 onClick={() => router.push("/records")}
                 className="group relative bg-white/80 backdrop-blur p-6 rounded-xl shadow hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex items-center gap-4"
@@ -126,7 +126,7 @@ export default function Homepage() {
                 </h3>
               </div>
 
-              {/* Revenue */}
+              
               <div
                 onClick={() => router.push("/revenue")}
                 className="group relative bg-white/80 backdrop-blur p-6 rounded-xl shadow hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex items-center gap-4"
@@ -137,7 +137,7 @@ export default function Homepage() {
                 </h3>
               </div>
 
-              {/* Doctors Cut */}
+              
               <div
                 onClick={() => router.push("/doctors_cuts")}
                 className="group relative bg-white/80 backdrop-blur p-6 rounded-xl shadow hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex items-center gap-4"
@@ -148,7 +148,7 @@ export default function Homepage() {
                 </h3>
               </div>
 
-              {/* Lab Info */}
+              
               <div
                 onClick={() => router.push("/lab_info")}
                 className="group relative bg-white/80 backdrop-blur p-6 rounded-xl shadow hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex items-center gap-4"

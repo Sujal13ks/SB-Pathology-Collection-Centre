@@ -5,7 +5,7 @@ export default function Page() {
     return (
         <div className="relative h-[calc(102vh-128px)] overflow-hidden bg-black text-white ">
 
-            {/* Background Image (optional cinematic effect) */}
+            
             <div className="absolute inset-0 ">
                 <Image
                     src="/bharat_lab_photo.jpg"
@@ -16,7 +16,7 @@ export default function Page() {
                 />
             </div>
 
-            {/* Credits Container */}
+            
             <div className="relative z-10 flex justify-center items-end h-full">
                 <div className="animate-credits text-center w-full max-w-3xl px-6 space-y-6">
 
@@ -71,7 +71,7 @@ professionals to efficiently manage patient data.
                     </h2>
 
                     <h1 className="text-3xl font-extrabold">
-                        SUJAL SHIVAJI KASHIVALE
+                        SUJAL SHIVAJI KASHIVALE<br/>
                     </h1>
 
                     <p className="mt-8 text-gray-400">
@@ -81,7 +81,7 @@ professionals to efficiently manage patient data.
                 </div>
             </div>
 
-            {/* Custom Animation */}
+            
             <style jsx>{`
         .animate-credits {
           animation: scrollUp 35s linear infinite;

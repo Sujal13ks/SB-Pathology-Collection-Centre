@@ -28,12 +28,12 @@ export default function RecordsPage() {
     fetchBills();
   }, []);
 
-  // unique doctors
+  
   const doctors = [
     ...new Set(bills.map((b) => b.patientId?.doctorName).filter(Boolean)),
   ];
 
-  // 🔥 filters logic
+  
   const filteredBills = bills.filter((bill) => {
     const name = bill.patientId?.name?.toLowerCase() || "";
     const doctor = bill.patientId?.doctorName || "";
@@ -57,7 +57,7 @@ export default function RecordsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
 
-      {/* Header */}
+      
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
         <h1 className="text-lg font-semibold">Patient Records</h1>
 
@@ -68,7 +68,7 @@ export default function RecordsPage() {
         </Link>
       </div>
 
-      {/* Banner */}
+      
       <div className="flex justify-center mt-6">
         <Image
           src="/Screenshot (3).png"
@@ -79,10 +79,10 @@ export default function RecordsPage() {
         />
       </div>
 
-      {/* 🔥 SEARCH + FILTER */}
+      
       <div className="max-w-5xl mx-auto mt-6 px-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-        {/* Search */}
+        
         <input
           type="text"
           placeholder="🔍 Search patient..."
@@ -91,7 +91,7 @@ export default function RecordsPage() {
           className="px-4 py-2 rounded-xl bg-white shadow focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Doctor */}
+        
         <select
           value={doctorFilter}
           onChange={(e) => setDoctorFilter(e.target.value)}
@@ -103,7 +103,7 @@ export default function RecordsPage() {
           ))}
         </select>
 
-        {/* Date */}
+        
         <input
           type="date"
           value={dateFilter}
@@ -113,7 +113,7 @@ export default function RecordsPage() {
 
       </div>
 
-      {/* 🔥 CARD LIST */}
+      
       <div className="max-w-5xl mx-auto mt-6 px-4 space-y-4">
 
         {filteredBills.length === 0 ? (
@@ -128,7 +128,7 @@ export default function RecordsPage() {
               className="bg-white/80 backdrop-blur p-5 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition cursor-pointer flex justify-between items-center"
             >
 
-              {/* Left */}
+              
               <div>
                 <h2 className="text-lg font-semibold text-gray-800">
                   {bill.patientId?.name || "Deleted"}
@@ -139,12 +139,12 @@ export default function RecordsPage() {
                 </p>
               </div>
 
-              {/* Center */}
+              
               <div className="text-sm text-gray-500">
                 {new Date(bill.createdAt).toLocaleDateString()}
               </div>
 
-              {/* Right */}
+              
               <div className="text-lg font-bold text-green-600">
                 ₹{bill.total}
               </div>
@@ -155,7 +155,7 @@ export default function RecordsPage() {
 
       </div>
 
-      {/* 🔥 MODAL */}
+      
       {selectedBill && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
 
@@ -185,7 +185,7 @@ export default function RecordsPage() {
 
             </div>
 
-            {/* 🔥 ACTIONS */}
+            
             <div className="flex gap-3 mt-6">
 
               <button
