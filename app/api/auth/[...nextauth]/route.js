@@ -21,24 +21,24 @@ export const { handlers, auth } = NextAuth({
         if (account.provider === "github") {
           await connectDB();
 
-          // ✅ FIX: handle null email
-          const email = user.email || `${user.name}@github.com`;
+          // ✅ ALWAYS UNIQUE EMAIL
+          const email =
+            user.email ||
+            `${user.name}_${account.providerAccountId}@github.com`;
 
-          let currentUser = await User.findOne({
-            email: email,
-          });
+          let currentUser = await User.findOne({ email });
 
           if (!currentUser) {
             await User.create({
-              email: email,
-              username: email.split("@")[0],
+              email,
+              username: user.name || email.split("@")[0],
             });
           }
 
           return true;
         }
 
-        return true; // ✅ DON'T BLOCK
+        return true;
       } catch (error) {
         console.log("SignIn Error:", error);
         return false;
