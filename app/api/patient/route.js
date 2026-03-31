@@ -1,5 +1,6 @@
 import connectDB from "@/db/connectdb";
 import Patient from "@/models/Patient";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -7,24 +8,43 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    // ✅ FIX: ensure correct data types
+    // ✅ validation
+    if (!body.name || !body.age || !body.gender || !body.doctorName) {
+      return NextResponse.json(
+        { message: "All required fields missing" },
+        { status: 400 }
+      );
+    }
+
+    // ✅ clean data
     const patientData = {
-      name: body.name,
-      age: Number(body.age), // 🔥 IMPORTANT
+      name: body.name.trim(),
+      age: Number(body.age),
       gender: body.gender,
-      doctorName: body.doctorName,
-      address: body.address,
+      doctorName: body.doctorName.trim(),
+      address: body.address?.trim() || "",
     };
 
-    console.log("Incoming Data:", patientData); // ✅ debug
+    // ✅ check age
+    if (isNaN(patientData.age)) {
+      return NextResponse.json(
+        { message: "Age must be number" },
+        { status: 400 }
+      );
+    }
+
+    console.log("Patient Data:", patientData);
 
     const patient = await Patient.create(patientData);
 
-    return Response.json({ patient }, { status: 201 });
+    return NextResponse.json(
+      { success: true, patient },
+      { status: 201 }
+    );
   } catch (error) {
-    console.log("ERROR:", error); // ✅ VERY IMPORTANT
+    console.log("PATIENT ERROR:", error);
 
-    return Response.json(
+    return NextResponse.json(
       { message: error.message },
       { status: 500 }
     );
