@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Line,
-    LineChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
 } from "recharts";
 
 export default function RevenuePage() {
@@ -38,7 +39,11 @@ export default function RevenuePage() {
     fetchBills();
   }, []);
 
-  const [year, month] = selectedMonth.split("-");
+  // ✅ safe split
+  const [year, month] = selectedMonth
+    ? selectedMonth.split("-")
+    : ["", ""];
+
   const now = new Date();
 
   const filteredBills = bills.filter((bill) => {
@@ -61,8 +66,9 @@ export default function RevenuePage() {
     return isSameMonth;
   });
 
+  // ✅ safe calculations
   const totalRevenue = filteredBills.reduce(
-    (sum, bill) => sum + Number(bill.total || 0),
+    (sum, bill) => sum + Number(bill?.total || 0),
     0
   );
 
@@ -77,19 +83,19 @@ export default function RevenuePage() {
 
   const lineData = filteredBills.map((bill, i) => ({
     name: `#${i + 1}`,
-    revenue: bill.total,
+    revenue: Number(bill?.total || 0),
   }));
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen text-lg font-semibold">
         Loading...
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 p-6">
-
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -124,7 +130,7 @@ export default function RevenuePage() {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
 
           <div className="p-5 rounded-xl text-white bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg">
             <p>Total</p>
@@ -143,10 +149,17 @@ export default function RevenuePage() {
 
         </div>
 
+        {/* No Data */}
+        {filteredBills.length === 0 && (
+          <div className="text-center text-gray-500 mb-6">
+            No data available
+          </div>
+        )}
+
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* 🔥 Bar Chart */}
+          {/* Bar Chart */}
           <div className="bg-white/80 backdrop-blur p-5 rounded-xl shadow-lg">
             <h3 className="text-sm text-gray-600 mb-3">
               Revenue Split
@@ -156,17 +169,11 @@ export default function RevenuePage() {
               <BarChart data={barData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: "10px",
-                    border: "none",
-                    background: "#fff",
-                  }}
-                />
+                <Tooltip />
+
                 <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                  {/* custom colors */}
                   {barData.map((entry, index) => (
-                    <cell
+                    <Cell
                       key={index}
                       fill={
                         index === 0
@@ -182,7 +189,7 @@ export default function RevenuePage() {
             </ResponsiveContainer>
           </div>
 
-          {/* 🔥 Line Chart */}
+          {/* Line Chart */}
           <div className="bg-white/80 backdrop-blur p-5 rounded-xl shadow-lg">
             <h3 className="text-sm text-gray-600 mb-3">
               Revenue Trend
